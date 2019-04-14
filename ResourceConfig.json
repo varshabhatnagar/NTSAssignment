@@ -1,0 +1,40 @@
+{
+    "VpcId" : "vpc-54586933",
+    "subnet" : ["subnet-a3ccd6c4","subnet-566c661f"],
+    "KeyPair" : { "Name" : "ntskey"  }, 
+    "LoadBalancer" : 
+    {   
+       "Name" : "NTSloadbalancer",
+       "Type" : "application",
+       "TargerGroup" : {
+           "Name" : "NTStargetgroup2",
+          "Port" : 8080,
+          "Protocol" : "HTTP",
+          "HealthCheckProtocol" : "HTTP",
+          "HealthCheckPath" : "/",
+          "HealthCheckIntervalSeconds" : 30,
+          "HealthCheckTimeoutSeconds" : 5,
+          "HealthyThresholdCount" : 5,
+          "UnhealthyThresholdCount" : 2
+        },
+        "Listener" : {
+            "Protocol" : "HTTP",
+            "Port" : 80
+        }
+    },
+    "AutoScaling" : {
+        "Name" : "NTSAutoScalingGroup",
+        "MinSize" : 2,
+        "MaxSize" : 2,
+        "DesiredCapacity" : 2,
+        "HealthCheckGracePeriod" : 60,
+        "HealthCheckType" : "ELB",
+        "LaunchConfiguration" : {
+            "Name" : "NTSlaunchconfig",
+            "ImageId" : "ami-0b419c3a4b01d1859",
+            "InstanceType" : "t2.micro"
+        }
+
+    }
+
+  }

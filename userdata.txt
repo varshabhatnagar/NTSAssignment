@@ -1,0 +1,27 @@
+#!/bin/bash
+sudo yum update -y
+sudo yum install -y docker
+sudo usermod -aG docker ec2-user
+sudo service docker start
+
+sudo mkdir /tmp/docker
+sudo touch /tmp/docker/index.html
+sudo touch /tmp/docker/Dockerfile
+sudo chmod 777 /tmp/docker/index.html
+sudo chmod 777 /tmp/docker/Dockerfile
+sudo cat > /tmp/docker/index.html << EOF
+<html>
+<header><title>Webpage for NTS</title></header>
+<body>
+Hello News Technology Services!
+</body>
+</html>
+EOF
+
+sudo cat > /tmp/docker/Dockerfile <<EOF
+FROM httpd:2.4
+COPY ./index.html/ /usr/local/apache2/htdocs/
+EOF
+
+docker build -t nts /tmp/docker/
+docker run -dit --name nts-app -p 8080:80 nts
